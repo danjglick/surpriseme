@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, send_from_directory
+import os
 
 app = Flask(__name__, static_folder="../frontend", static_url_path="")
 
@@ -12,4 +13,5 @@ def api():
     return jsonify({"message": f"Hello, {name}!"})
 
 if __name__ == "__main__":
-    app.run(port=8000, debug=True)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host="0.0.0.0", port=port)
