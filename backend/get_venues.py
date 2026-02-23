@@ -4,7 +4,11 @@ import random
 
 from dotenv import load_dotenv; load_dotenv()
 
-GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
+    print("WARNING: GOOGLE_API_KEY not set!")
+else:
+    print(f"API Key loaded: {GOOGLE_API_KEY[:10]}...")  # Show first 10 chars
 ZIP_CENTER = {"lat": 42.3782, "lng": -71.0325}
 DRIVE_RADIUS_METERS = 7000   # ~10-min drive
 WALK_RADIUS_METERS = 800     # ~10-min walk
