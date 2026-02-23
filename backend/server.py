@@ -15,9 +15,17 @@ def index():
 
 @app.route("/api/venue", methods=["GET"])
 def api():
-    zipcode = request.args.get("zipcode")
-    venues = get_venues()
-    return jsonify({"message": f"{venues}"})
+    try:
+        zipcode = request.args.get("zipcode")
+        print(f"Zipcode: {zipcode}")
+        venues = get_venues()
+        print(f"Venues: {venues}")
+        return jsonify({"message": venues})
+    except Exception as e:
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
