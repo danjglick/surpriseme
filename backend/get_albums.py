@@ -21,9 +21,5 @@ def get_albums(genre):
     params["offset"] = offset
     params["limit"] = 1
     response = requests.get(BASE_URL, params=params, headers=HEADERS)
-    album = response.json()["release-groups"][0]
-    return {
-        "title": album["title"],
-        "artist": album["artist-credit"][0]["name"],
-        "mbid": album["id"]
-    }
+    albums = response.json()["release-groups"][0:3]
+    return albums
