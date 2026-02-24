@@ -8,7 +8,8 @@ API_KEY = os.environ.get("GOOGLE_API_KEY")
 GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby"
 FIELD_MASK = "places.id,places.displayName,places.location"
-RADIUS_METERS = 15000   # ~20-min drive
+RADIUS_MILES = 20
+RADIUS_METERS = RADIUS_MILES * 1609.34
 
 
 def _get_coordinates(zipcode: str):
@@ -43,14 +44,13 @@ def _search_nearby(lat, lng, types, radius):
     }
     response = requests.post(PLACES_URL, headers=headers, json=body)
     data = response.json()
-    return data.get("places", [])
+    return data.get("places", []) 
 
 
-def get_places(type: str, zipcode: str):
-    # type must match the type field in Google's API
+def get_places(googlePlaceType: str, zipcode: str):
     coordinates = _get_coordinates(zipcode)
-    places_pool = _search_nearby(lat=coordinates[0], lng=coordinates[1], types=[type], radius=RADIUS_METERS)
+    places_pool = _search_nearby(lat=coordinates[0], lng=coordinates[1], types=[googlePlaceType], radius=RADIUS_METERS)
     places = []
     for _ in range(0, 3):
         places.append(random.choice(places_pool)["displayName"]["text"])
-    return places 
+    return places
