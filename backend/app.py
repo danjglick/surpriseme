@@ -1,7 +1,6 @@
 import os
 
-from get_bars import get_bars
-from get_parks import get_parks
+from get_places import get_places
 from get_movies import get_movies
 from get_albums import get_albums
 
@@ -19,14 +18,21 @@ def index():
 @app.route("/api/bars", methods=["GET"])
 def fetch_bars():
     zipcode = request.args.get("zipcode")
-    bars = get_bars(zipcode)
+    bars = get_places("bar", zipcode)
     return jsonify({"message": f"{bars}"})
+
+
+@app.route("/api/restaurants", methods=["GET"])
+def fetch_restaurants():
+    zipcode = request.args.get("zipcode")
+    restaurants = get_places("restaurant", zipcode)
+    return jsonify({"message": f"{restaurants}"})
 
 
 @app.route("/api/parks", methods=["GET"])
 def fetch_parks():
     zipcode = request.args.get("zipcode")
-    parks = get_parks(zipcode)
+    parks = get_places("park", zipcode)
     return jsonify({"message": f"{parks}"})
 
 

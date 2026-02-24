@@ -5,6 +5,13 @@ document.getElementById("bar_btn").onclick = async () => {
 	document.getElementById("bar_output").innerText = data.message
 }
 
+document.getElementById("restaurant_btn").onclick = async () => {
+    const zipcode = document.getElementById("zipcode_for_restaurant").value
+    const response = await fetch(`/api/restaurants?zipcode=${zipcode}`)
+    const data = await response.json()
+    document.getElementById("restaurant_output").innerText = data.message
+}
+
 document.getElementById("park_btn").onclick = async () => {
     const zipcode = document.getElementById("zipcode_for_park").value
     const response = await fetch(`/api/parks?zipcode=${zipcode}`)

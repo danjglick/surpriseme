@@ -1,19 +1,20 @@
 import os
+import random
 import requests
 
 from dotenv import load_dotenv; load_dotenv()
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+API_KEY = os.environ.get("GOOGLE_API_KEY")
+GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby"
 FIELD_MASK = "places.id,places.displayName,places.location"
-GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 RADIUS_METERS = 15000   # ~20-min drive
 
 
-def get_coordinates(zipcode: str):
+def _get_coordinates(zipcode: str):
     params = {
         "address": f"{zipcode}, US",
-        "key": GOOGLE_API_KEY
+        "key": API_KEY
 	}
     response = requests.get(GEOCODE_URL, params=params)
     response.raise_for_status()
@@ -22,10 +23,10 @@ def get_coordinates(zipcode: str):
     return location["lat"], location["lng"]
     
 
-def search_nearby(lat, lng, types, radius):
+def _search_nearby(lat, lng, types, radius):
     headers = {
         "Content-Type": "application/json",
-        "X-Goog-Api-Key": GOOGLE_API_KEY,
+        "X-Goog-Api-Key": API_KEY,
         "X-Goog-FieldMask": FIELD_MASK,
     }
     body = {
@@ -43,3 +44,13 @@ def search_nearby(lat, lng, types, radius):
     response = requests.post(PLACES_URL, headers=headers, json=body)
     data = response.json()
     return data.get("places", [])
+
+
+def get_places(type: str, zipcode: str):
+    # type must match the type field in Google's API
+    coordinates = _get_coordinates(zipcode)
+    places_pool = _search_nearby(lat=coordinates[0], lng=coordinates[1], types=[type], radius=RADIUS_METERS)
+    places = []
+    for _ in range(0, 3):
+        places.append(random.choice(places_pool)["displayName"]["text"])
+    return places 

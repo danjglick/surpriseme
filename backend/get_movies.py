@@ -4,8 +4,8 @@ import requests
 
 from dotenv import load_dotenv; load_dotenv()
 
-TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
-TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
+API_KEY = os.environ.get("TMDB_API_KEY")
+URL = "https://api.themoviedb.org/3/discover/movie"
 
 
 def _lookup_genre_id(movie_genre):
@@ -51,16 +51,16 @@ def _lookup_genre_id(movie_genre):
 def get_movies(movie_genre):
     genre_id = _lookup_genre_id(movie_genre)
     params = {
-        "api_key": TMDB_API_KEY,
+        "api_key": API_KEY,
         "with_genres": genre_id,
         "language": "en-US",
         "page": 1
     }
-    response = requests.get(TMDB_URL, params=params).json()
+    response = requests.get(URL, params=params).json()
     total_pages = min(response["total_pages"], 500) # TMDB limits page queries to 500
     random_page = random.randint(1, total_pages)
     params["page"] = random_page
-    response = requests.get(TMDB_URL, params=params).json()
+    response = requests.get(URL, params=params).json()
     valid_movies = response["results"]
     selected_movies = []
     for _ in range(0, 3):
