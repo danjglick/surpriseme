@@ -1,10 +1,11 @@
 import random
 import requests
+import time
 
 BASE_URL = "https://musicbrainz.org/ws/2/release-group"
 HEADERS = {
     "User-Agent": "SurpriseMe/1.0.0 ( danjglick@gmail.com )",
-    "Accpet": "application/json"
+    "Accept": "application/json"
 }
 
 
@@ -19,7 +20,10 @@ def get_albums(genre):
     total = data["count"]
     offset = random.randint(0, min(total - 1, 9999)) # MusicBrainz practical cap ~10k
     params["offset"] = offset
-    params["limit"] = 1
+    params["limit"] = 3
     response = requests.get(BASE_URL, params=params, headers=HEADERS)
-    albums = response.json()["release-groups"][0:3]
-    return albums
+    valid_albums = response.json()["release-groups"]
+    selected_albums = []
+    for i in range(0, 3):
+        selected_albums.append(valid_albums[i]["title"])   
+    return selected_albums

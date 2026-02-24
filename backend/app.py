@@ -1,6 +1,6 @@
 import os
 
-from get_venues import get_venues
+from get_bars import get_bars
 from get_movies import get_movies
 from get_albums import get_albums
 
@@ -15,11 +15,11 @@ def index():
     return send_from_directory(app.static_folder, "index.html")
 
 
-@app.route("/api/venues", methods=["GET"])
-def fetch_venues():
+@app.route("/api/bars", methods=["GET"])
+def fetch_bars():
     zipcode = request.args.get("zipcode")
-    venues = get_venues(zipcode)
-    return jsonify({"message": f"{venues}"})
+    bars = get_bars(zipcode)
+    return jsonify({"message": f"{bars}"})
 
 
 @app.route("/api/movies", methods=["GET"])
