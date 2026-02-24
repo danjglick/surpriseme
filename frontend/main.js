@@ -1,8 +1,15 @@
 document.getElementById("bar_btn").onclick = async () => {
-    const zipcode = document.getElementById("zipcode").value
+    const zipcode = document.getElementById("zipcode_for_bar").value
     const response = await fetch(`/api/bars?zipcode=${zipcode}`)
     const data = await response.json()
 	document.getElementById("bar_output").innerText = data.message
+}
+
+document.getElementById("park_btn").onclick = async () => {
+    const zipcode = document.getElementById("zipcode_for_park").value
+    const response = await fetch(`/api/parks?zipcode=${zipcode}`)
+    const data = await response.json()
+    document.getElementById("park_output").innerText = data.message
 }
 
 document.getElementById("movie_btn").onclick = async () => {

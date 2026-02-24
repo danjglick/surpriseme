@@ -66,4 +66,3 @@ def get_movies(movie_genre):
     for _ in range(0, 3):
         selected_movies.append(random.choice(valid_movies)["title"])
     return selected_movies
-
