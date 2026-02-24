@@ -1,6 +1,7 @@
-import requests
-import random
 import os
+import random
+import requests
+
 from dotenv import load_dotenv; load_dotenv()
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
