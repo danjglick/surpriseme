@@ -1,8 +1,8 @@
 import os
 
-from get_places import get_places
-from get_movies import get_movies
-from get_albums import get_albums
+from backend.get_places import get_places
+from backend.get_movies import get_movies
+from backend.get_albums import get_albums
 
 from flask import Flask, jsonify, request, send_from_directory
 from dotenv import load_dotenv; load_dotenv()
@@ -125,8 +125,3 @@ def fetch_albums():
     album_genre = request.args.get("album_genre")
     albums = get_albums(album_genre)
     return jsonify({"message": f"{albums}"})
-
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    app.run(host="0.0.0.0", port=port)

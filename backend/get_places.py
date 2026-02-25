@@ -4,7 +4,7 @@ import requests
 
 from dotenv import load_dotenv; load_dotenv()
 
-API_KEY = os.environ.get("GOOGLE_API_KEY")
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 PLACES_URL = "https://places.googleapis.com/v1/places:searchNearby"
 FIELD_MASK = "places.id,places.displayName,places.location"
@@ -15,7 +15,7 @@ RADIUS_METERS = RADIUS_MILES * 1609.34
 def _get_coordinates(zipcode: str):
     params = {
         "address": f"{zipcode}, US",
-        "key": API_KEY
+        "key": GOOGLE_API_KEY
 	}
     response = requests.get(GEOCODE_URL, params=params)
     response.raise_for_status()
@@ -24,10 +24,10 @@ def _get_coordinates(zipcode: str):
     return location["lat"], location["lng"]
     
 
-def _search_nearby(lat, lng, types, radius):
+def _search_nearby(latitude, longitude, types, radius):
     headers = {
         "Content-Type": "application/json",
-        "X-Goog-Api-Key": API_KEY,
+        "X-Goog-Api-Key": GOOGLE_API_KEY,
         "X-Goog-FieldMask": FIELD_MASK,
     }
     body = {
@@ -35,8 +35,8 @@ def _search_nearby(lat, lng, types, radius):
         "locationRestriction": {
             "circle": {
                 "center": {
-                    "latitude": lat,
-                    "longitude": lng,
+                    "latitude": latitude,
+                    "longitude": longitude,
                 },
                 "radius": radius,
             }
@@ -49,7 +49,7 @@ def _search_nearby(lat, lng, types, radius):
 
 def get_places(googlePlaceType: str, zipcode: str = "02128"):
     coordinates = _get_coordinates(zipcode)
-    places_pool = _search_nearby(lat=coordinates[0], lng=coordinates[1], types=[googlePlaceType], radius=RADIUS_METERS)
+    places_pool = _search_nearby(latitude=coordinates[0], longitude=coordinates[1], types=[googlePlaceType], radius=RADIUS_METERS)
     places = []
     for _ in range(0, 3):
         places.append(random.choice(places_pool)["displayName"]["text"])
