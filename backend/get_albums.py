@@ -2,11 +2,11 @@ import random
 import requests
 
 MUSICBRAINZ_URL = "https://musicbrainz.org/ws/2/release-group"
-ROUGH_REQUESTS_LIMIT = "10000"
 HEADERS = {
     "User-Agent": "SurpriseMe/1.0.0 ( danjglick@gmail.com )",
     "Accept": "application/json"
 }
+ROUGH_REQUESTS_LIMIT = "10000"
 
 
 def get_albums(genre):
