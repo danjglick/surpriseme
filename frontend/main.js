@@ -1,5 +1,29 @@
 const zipcode = "02128"
 
+document.getElementById("go_ui").addEventListener("click", () => {
+    if (document.getElementById("test").hidden) {
+        document.getElementById("test").hidden = false
+    } else {
+        document.getElementById("test").hidden = true
+    } 
+})
+
+document.getElementById("watch").addEventListener("click", () => {
+    if (document.getElementById("watch_options").hidden) {
+        document.getElementById("watch_options").hidden = false
+    } else {
+        document.getElementById("watch_options").hidden = true
+    } 
+})
+
+document.getElementById("listen").addEventListener("click", () => {
+    if (document.getElementById("listen_options").hidden) {
+        document.getElementById("listen_options").hidden = false
+    } else {
+        document.getElementById("listen_options").hidden = true
+    } 
+})
+
 document.getElementById("bar_btn").onclick = async () => {
     // const zipcode = document.getElementById("zipcode_for_bar").value
     const response = await fetch(`/api/bars?zipcode=${zipcode}`)
