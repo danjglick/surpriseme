@@ -1,11 +1,9 @@
-import os
-
-from backend.get_places import get_places
-from backend.get_movies import get_movies
-from backend.get_albums import get_albums
-
-from flask import Flask, jsonify, request, send_from_directory
 from dotenv import load_dotenv; load_dotenv()
+from flask import Flask, jsonify, request, send_from_directory
+
+from backend.get_albums import get_albums
+from backend.get_movies import get_movies
+from backend.get_places import get_places
 
 app = Flask(__name__, static_folder="../frontend", static_url_path="")
 

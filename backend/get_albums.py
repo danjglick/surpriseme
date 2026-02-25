@@ -2,6 +2,7 @@ import random
 import requests
 
 MUSICBRAINZ_URL = "https://musicbrainz.org/ws/2/release-group"
+ROUGH_REQUESTS_LIMIT = "10000"
 HEADERS = {
     "User-Agent": "SurpriseMe/1.0.0 ( danjglick@gmail.com )",
     "Accept": "application/json"
@@ -17,7 +18,7 @@ def get_albums(genre):
     response = requests.get(MUSICBRAINZ_URL, params=params, headers=HEADERS)
     data = response.json()
     total = data["count"]
-    offset = random.randint(0, min(total - 1, 9999)) # MusicBrainz practical cap ~10k
+    offset = random.randint(0, min(total - 1, ROUGH_REQUESTS_LIMIT))
     params["offset"] = offset
     params["limit"] = 3
     response = requests.get(MUSICBRAINZ_URL, params=params, headers=HEADERS)
