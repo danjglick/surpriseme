@@ -47,7 +47,7 @@ def _search_nearby(lat, lng, types, radius):
     return data.get("places", []) 
 
 
-def get_places(googlePlaceType: str, zipcode: str):
+def get_places(googlePlaceType: str, zipcode: str = "02128"):
     coordinates = _get_coordinates(zipcode)
     places_pool = _search_nearby(lat=coordinates[0], lng=coordinates[1], types=[googlePlaceType], radius=RADIUS_METERS)
     places = []
