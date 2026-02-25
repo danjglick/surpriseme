@@ -3,6 +3,14 @@ body {
     text-indent: .6em;
 }
 
+input, button {
+    font-size: .75em;
+}
+
+input {
+    width: 5em;
+}
+
 .indent {
     text-indent: 2.6em;
 }
