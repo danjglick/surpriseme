@@ -61,8 +61,8 @@ def get_movies(movie_genre):
     random_page = random.randint(1, total_pages)
     params["page"] = random_page
     response = requests.get(URL, params=params).json()
-    valid_movies = response["results"]
-    selected_movies = []
+    movies_pool = response["results"]
+    movies = []
     for _ in range(0, 3):
-        selected_movies.append(random.choice(valid_movies)["title"])
-    return selected_movies
+        movies.append(random.choice(movies_pool)["title"])
+    return movies

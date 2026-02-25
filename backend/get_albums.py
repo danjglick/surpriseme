@@ -21,8 +21,8 @@ def get_albums(genre):
     params["offset"] = offset
     params["limit"] = 3
     response = requests.get(URL, params=params, headers=HEADERS)
-    valid_albums = response.json()["release-groups"]
-    selected_albums = []
+    albums_pool = response.json()["release-groups"]
+    albums = []
     for i in range(0, 3):
-        selected_albums.append(valid_albums[i]["title"])   
-    return selected_albums
+        albums.append(albums_pool[i]["title"])   
+    return albums
