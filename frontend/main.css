@@ -1,9 +1,10 @@
 body {
     font-size: 3em;
+    text-indent: .6em;
 }
 
 .indent {
-    text-indent: 2em;
+    text-indent: 2.6em;
 }
 
 .bold {
