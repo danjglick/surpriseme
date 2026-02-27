@@ -1,5 +1,5 @@
 body {
-    font-size: 4em;
+    font-size: 3em;
     text-indent: .6em;
 }
 
@@ -12,8 +12,14 @@ input {
     width: 5em;
 }
 
+.result {
+    text-indent: 0;
+}
+
 .indent {
     text-indent: 2.6em;
 }
 
-.hidden { display: none; }
+.hidden { 
+    display: none; 
+}
