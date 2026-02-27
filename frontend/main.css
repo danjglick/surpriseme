@@ -16,6 +16,4 @@ input {
     text-indent: 2.6em;
 }
 
-/* .bold {
-    font-weight: bold;
-} */
+.hidden { display: none; }
