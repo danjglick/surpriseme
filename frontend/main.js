@@ -17,14 +17,30 @@ const config = {
         { label: "a cafe", endpoint: "cafes", params: { zipcode } },
         { label: "a tourist attraction", endpoint: "attractions",  params: { zipcode } },
         { label: "an amusement park", endpoint: "amusement_parks",params: { zipcode } },
-        { label: "a bowling alley", endpoint: "bowling_alleys", params: { zipcode } }
+        { label: "a bowling alley", endpoint: "bowling_alleys", params: { zipcode } },
     ],
     watch_options: [
-        { label: "a movie", endpoint: "movies", params: { movie_genre } }
+        { label: "a movie", endpoint: "movies", params: { movie_genre } },
+        { label: "a tv show" },
+        { label: "a live sports game" },
+        { label: "a youtube channel" },
     ],
     listen_options: [
-        { label: "an album", endpoint: "albums", params: { album_genre } }
+        { label: "an album", endpoint: "albums", params: { album_genre } },
+        { label: "a podcast" },
+        { label: "an audiobook" }
+    ], 
+    read_options: [
+        { label: "a book" },
+        { label: "a news source" },
+        { label: "a fun fact" },
+    ],
+    make_options: [
+        { label: "a recipe" },
+        { label: "a craft project" },
+        { label: "a science project" },
     ]
+
 }
 
 const trigger_and_target_pairs_for_hiding = [
@@ -40,7 +56,7 @@ for (const [containerId, items] of Object.entries(config)) {
     const container = document.getElementById(containerId);
     for (const item of items) {
         const row = document.createElement("p")
-        row.innerHTML = `<span>with ${item.label}</span><button>-></button><p>`
+        row.innerHTML = `<span>with ${item.label}</span>&nbsp;<button>-></button><p>`
         row.querySelector("button").addEventListener("click", async () => {
             document.querySelectorAll(".result").forEach(element => element.remove())
             const params = typeof item.params === "function" ? item.params() : item.params
