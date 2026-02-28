@@ -33,14 +33,22 @@ const config = {
     read_options: [
         { label: "a book" },
         { label: "a news source" },
-        { label: "a fun fact" },
+        { label: "a wikipedia article" },
+        { label: "a subreddit" },
     ],
     make_options: [
         { label: "a recipe" },
         { label: "a craft project" },
         { label: "a science project" },
+        { label: "a game" },
+    ],
+    connection_options: [
+        { label: "a new friend" },
+        { label: "an event" },
+        { label: "a meetup group" },
+        { label: "a class" },
+        { label: "a debate" },
     ]
-
 }
 
 const trigger_and_target_pairs_for_hiding = [
@@ -49,8 +57,9 @@ const trigger_and_target_pairs_for_hiding = [
     ["listen", "listen_options"],
     ["read", "read_options"],
     ["make", "make_options"],
-    ["friend", "friend_options"]
+    ["connection", "connection_options"],
 ]
+
 
 for (const [containerId, items] of Object.entries(config)) {
     const container = document.getElementById(containerId);
@@ -87,6 +96,7 @@ for (const [containerId, items] of Object.entries(config)) {
         container.appendChild(row)
     }
 }
+
 
 trigger_and_target_pairs_for_hiding.forEach(([triggerId, targetId]) => {
     const trigger = document.getElementById(triggerId)
