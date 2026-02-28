@@ -22,7 +22,7 @@ const config = {
     watch_options: [
         { label: "a movie", endpoint: "movies", params: { movie_genre } },
         { label: "a tv show" },
-        { label: "a live sports game" },
+        { label: "live sports" },
         { label: "a youtube channel" },
     ],
     listen_options: [
@@ -89,8 +89,11 @@ for (const [containerId, items] of Object.entries(config)) {
 }
 
 trigger_and_target_pairs_for_hiding.forEach(([triggerId, targetId]) => {
-    document.getElementById(triggerId).addEventListener("click", () => {
-        const element = document.getElementById(targetId)
-        element.hidden = !element.hidden
+    const trigger = document.getElementById(triggerId)
+    const target = document.getElementById(targetId)
+    trigger.addEventListener("click", () => {
+        target.hidden = !target.hidden
+        const chevron = trigger.querySelector(".chevron")
+        chevron.textContent = target.hidden ? "▶" : "▼"
     })
 })
