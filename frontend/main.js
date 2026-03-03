@@ -75,8 +75,7 @@ for (const [containerId, items] of Object.entries(config)) {
                 result = data.message[i]
                 const photo = document.createElement("img"); photo.className = "result"; photo.src = result.photo; section.appendChild(photo)
                 const name = document.createElement("div"); name.className = "result"; name.innerText = result.name; section.appendChild(name)
-                const disambiguator = document.createElement("div"); disambiguator.className = "result"; disambiguator.innerText = result.disambiguator; section.appendChild(disambiguator)
-                const actionInfo = document.createElement("div"); actionInfo.className = "result"; actionInfo.innerText = result.actionInfo.is_open_now; section.appendChild(actionInfo)
+                const links = document.createElement("a"); links.className = "result"; links.href = result.links[0]; links.target = "_blank"; links.innerText = "Open now"; section.appendChild(links)
                 const description = document.createElement("div"); description.className = "result"; description.innerText = result.description; section.appendChild(description)
                 const blankLine = document.createElement("br"); blankLine.className = "result"; section.appendChild(blankLine)
             }

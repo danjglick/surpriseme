@@ -4,8 +4,11 @@ import requests
 
 from dotenv import load_dotenv; load_dotenv()
 
+from backend.surprise import Surprise
+
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
+CONFIG_URL = "https://api.themoviedb.org/3/configuration"
 
 
 def _lookup_genre_id(movie_genre):
@@ -48,6 +51,10 @@ def _lookup_genre_id(movie_genre):
 			return 37
 
 
+def _get_photo():
+	return
+
+
 def get_movies(movie_genre):
 	genre_id = _lookup_genre_id(movie_genre)
 	params = {
@@ -60,19 +67,17 @@ def get_movies(movie_genre):
 	total_pages = min(response["total_pages"], 450) # TMDB limits page queries to 500
 	random_page = random.randint(1, total_pages)
 	params["page"] = random_page
-	response = requests.get(TMDB_URL, params=params).json()
-	movies_pool = response["results"]
+	response = requests.get(TMDB_URL, params=params)
+	movies_pool = response.json()["results"]
 	movies = []
 	for _ in range(0, 3):
 		movie = random.choice(movies_pool)
 		name = movie["title"]
-		raw_disambiguator = movie["release_date"]
-		pretty_disambiguator = f"({raw_disambiguator[0:4]})"
+		year = movie["release_date"][0:4]
+		name += f" - {year}"
 		description = movie["overview"]
-		movie = {
-			"name": name,
-			"disambiguator": pretty_disambiguator,
-			"description": description
-		}
+		photo = f"https://image.tmdb.org/t/p/w500/{movie["backdrop_path"]}"
+		links = [""]
+		movie = Surprise(name, description, photo, links)
 		movies.append(movie)
 	return movies

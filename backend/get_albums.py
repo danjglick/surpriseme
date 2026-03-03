@@ -212,11 +212,16 @@ def get_albums(genre):
                     break
                 album = futures[future]
                 reception = future.result()
+                # response = requests.get(f"http://coverarchive.org/{album["releases"][0]["id"]}/front", headers=MUSICBRAINZ_HEADERS)
+                # photo = response.json()
+                # print(photo)
+                name = album["title"] + " - " + album['artist-credit'][0]['name']
                 if reception:
                     albums.append({
-                        "name": album["title"],
-                        "disambiguator": f"({album['artist-credit'][0]['name']})",
-                        "description": reception
+                        "name": name,
+                        "description": reception,
+                        "photo": "",
+                        "links": [""]
                     })
         attempts += 1
     return albums
