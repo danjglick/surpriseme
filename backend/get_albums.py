@@ -1,8 +1,8 @@
 import random
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 MUSICBRAINZ_URL = "https://musicbrainz.org/ws/2/release-group"
 MUSICBRAINZ_HEADERS = {
@@ -10,7 +10,8 @@ MUSICBRAINZ_HEADERS = {
     "Accept": "application/json"
 }
 MUSICBRAINZ_REQUESTS_CAP = 10000
-WIKI_HEADERS = {
+WIKIPEDIA_URL = "https://en.wikipedia.org/w/api.php"
+WIKIPEDIA_HEADERS = {
     "User-Agent": "AlbumReceptionFetcher/1.0 (danjglick@example.com)"
 }
 
@@ -93,7 +94,6 @@ def _split_sentences(text: str) -> list[str]:
 
 
 def _get_reception(album_name: str, artist: str) -> str | None:
-    search_url = "https://en.wikipedia.org/w/api.php"
     try:
         search_params = {
             "action": "query",
@@ -102,7 +102,7 @@ def _get_reception(album_name: str, artist: str) -> str | None:
             "format": "json",
             "srlimit": 5
         }
-        response = requests.get(search_url, params=search_params, headers=WIKI_HEADERS, timeout=5)
+        response = requests.get(WIKIPEDIA_URL, params=search_params, headers=WIKIPEDIA_HEADERS, timeout=5)
         response.raise_for_status()
         results = response.json().get("query", {}).get("search", [])
         if not results:
@@ -114,7 +114,7 @@ def _get_reception(album_name: str, artist: str) -> str | None:
             "prop": "sections",
             "format": "json"
         }
-        response = requests.get(search_url, params=sections_params, headers=WIKI_HEADERS, timeout=5)
+        response = requests.get(WIKIPEDIA_URL, params=sections_params, headers=WIKIPEDIA_HEADERS, timeout=5)
         response.raise_for_status()
         sections = response.json().get("parse", {}).get("sections", [])
         reception_section = None
@@ -136,7 +136,7 @@ def _get_reception(album_name: str, artist: str) -> str | None:
             "section": reception_section["index"],
             "format": "json"
         }
-        response = requests.get(search_url, params=content_params, headers=WIKI_HEADERS, timeout=5)
+        response = requests.get(WIKIPEDIA_URL, params=content_params, headers=WIKIPEDIA_HEADERS, timeout=5)
         response.raise_for_status()
         wikitext = response.json().get("parse", {}).get("wikitext", {}).get("*", "")
         cleaned = _remove_templates(wikitext)

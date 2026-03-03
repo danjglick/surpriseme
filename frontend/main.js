@@ -60,43 +60,30 @@ const trigger_and_target_pairs_for_hiding = [
     ["connection", "connection_options"],
 ]
 
-
 for (const [containerId, items] of Object.entries(config)) {
     const container = document.getElementById(containerId);
     for (const item of items) {
-        const row = document.createElement("p")
-        row.innerHTML = `<span>with ${item.label}</span>&nbsp;<button>-></button><p>`
-        row.querySelector("button").addEventListener("click", async () => {
+        const section = document.createElement("p")
+        section.innerHTML = `<span>with ${item.label}</span>&nbsp;<button>-></button><p>`
+        section.querySelector("button").addEventListener("click", async () => {
             document.querySelectorAll(".result").forEach(element => element.remove())
             const params = typeof item.params === "function" ? item.params() : item.params
             const query = new URLSearchParams(params).toString()
             const response = await fetch(`/api/${item.endpoint}?${query}`)
             const data = await response.json()
             for (let i = 0; i < data.message.length; i++) {
-                const obj = data.message[i]
-                const name = document.createElement("div")
-                const disambiguator = document.createElement("div")
-                const description = document.createElement("div")
-                name.className = "result"
-                disambiguator.className = "result"
-                description.className = "result"
-                name.innerText = obj.name
-                disambiguator.innerText = obj.disambiguator
-                description.innerText = obj.description
-                if (i > 0) {
-                    const br = document.createElement("br")
-                    br.className = "result"
-                    row.appendChild(br)
-                }
-                row.appendChild(name)
-                row.appendChild(disambiguator)
-                row.appendChild(description)
+                result = data.message[i]
+                const photo = document.createElement("img"); photo.className = "result"; photo.src = result.photo; section.appendChild(photo)
+                const name = document.createElement("div"); name.className = "result"; name.innerText = result.name; section.appendChild(name)
+                const disambiguator = document.createElement("div"); disambiguator.className = "result"; disambiguator.innerText = result.disambiguator; section.appendChild(disambiguator)
+                const actionInfo = document.createElement("div"); actionInfo.className = "result"; actionInfo.innerText = result.actionInfo.is_open_now; section.appendChild(actionInfo)
+                const description = document.createElement("div"); description.className = "result"; description.innerText = result.description; section.appendChild(description)
+                const blankLine = document.createElement("br"); blankLine.className = "result"; section.appendChild(blankLine)
             }
         })
-        container.appendChild(row)
+        container.appendChild(section)
     }
 }
-
 
 trigger_and_target_pairs_for_hiding.forEach(([triggerId, targetId]) => {
     const trigger = document.getElementById(triggerId)
