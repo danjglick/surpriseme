@@ -72,12 +72,47 @@ for (const [containerId, items] of Object.entries(config)) {
             const response = await fetch(`/api/${item.endpoint}?${query}`)
             const data = await response.json()
             for (let i = 0; i < data.message.length; i++) {
-                result = data.message[i]
-                const photo = document.createElement("img"); photo.className = "result"; photo.src = result.photo; section.appendChild(photo)
-                const name = document.createElement("div"); name.className = "result"; name.innerText = result.name; section.appendChild(name)
-                const links = document.createElement("a"); links.className = "result"; links.href = result.links[0]; links.target = "_blank"; links.innerText = "Open now"; section.appendChild(links)
-                const description = document.createElement("div"); description.className = "result"; description.innerText = result.description; section.appendChild(description)
-                const blankLine = document.createElement("br"); blankLine.className = "result"; section.appendChild(blankLine)
+                result = data.message[i] 
+
+                const scrollRow = document.createElement("div"); scrollRow.className = "scroll-row"
+                for (let j = 0; j < result.photos.length; j++) {
+                    const photo = document.createElement("img")
+                    photo.className = "result"
+                    photo.src = result.photos[j]
+                    scrollRow.appendChild(photo)
+                }
+                section.append(scrollRow)
+                
+                const name = document.createElement("div")
+                name.className = "result"
+                name.innerText = result.name
+                section.appendChild(name)
+                
+                const actionInfo = document.createElement("span")
+                actionInfo.classList.add("result", "availability")
+                actionInfo.innerText = "Open now"
+                for (let i = 0; i < result.links.length; i++) {
+                    const link = document.createElement("a")
+                    link.className = "result"
+                    link.href = result.links[i].href
+                    link.target = "_blank"
+                    const icon = document.createElement("img")
+                    icon.className = "result"
+                    icon.src = result.links[i].src
+                    link.appendChild(icon)
+                    actionInfo.appendChild(link)
+                }
+                section.appendChild(actionInfo)
+                const description = document.createElement("div")
+                description.className = "result"
+                description.innerText = result.description
+                section.appendChild(description)
+                
+                if (i < 2) {
+                    const blankLine = document.createElement("br")
+                    blankLine.className = "result"
+                    section.appendChild(blankLine)
+                }
             }
         })
         container.appendChild(section)

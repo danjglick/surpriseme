@@ -24,6 +24,23 @@ input {
     display: none; 
 }
 
-.chevron {
-    font-family: "Noto Sans Symbols", "Segoe UI Symbol", sans-serif;
+.scroll-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px;
+}
+
+.scroll-row img {
+    height: 150px;
+    flex: 0 0 auto;
+    border-radius: 8px;
+}
+
+.availability {
+    color: green;
+}
+
+.availability a {
+    margin-right: .25em;
 }

@@ -220,7 +220,7 @@ def get_albums(genre):
                     albums.append({
                         "name": name,
                         "description": reception,
-                        "photo": "",
+                        "photos": "",
                         "links": [""]
                     })
         attempts += 1
