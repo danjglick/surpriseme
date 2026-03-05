@@ -9,7 +9,7 @@ from backend.surprise import Surprise
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 PLACES_URL = "https://places.googleapis.com/v1/places:searchText"
-FIELD_MASK = "places.displayName,places.currentOpeningHours,places.googleMapsLinks,places.addressComponents,places.editorialSummary,places.generativeSummary,places.reviewSummary,places.photos,nextPageToken"
+FIELD_MASK = "places.displayName,places.currentOpeningHours,places.googleMapsLinks,places.addressComponents,places.reviewSummary,places.photos,nextPageToken"
 PLACES_HEADERS = { 
     "Content-Type": "application/json", 
     "X-Goog-Api-Key": GOOGLE_API_KEY, 
@@ -23,8 +23,8 @@ RADIUS_METERS = RADIUS_MILES * 1609.34
 def _get_nearby_places(type, zipcode):
     body = {
         "textQuery": f"{type} near {zipcode}",
-        "minRating": "4.0",
-        # "openNow": "true"
+        # "openNow": "true",
+        "minRating": "4.0"
     }
     response = requests.post(PLACES_URL, headers=PLACES_HEADERS, json=body)
     data = response.json()
@@ -61,10 +61,6 @@ def get_places(type, zipcode):
         description = ""
         if "reviewSummary" in place:
             description = " ".join(line.strip() for line in place["reviewSummary"]["text"]["text"].splitlines())
-        if "generativeSummary" in place:
-            description = place["generativeSummary"]["overview"]["text"] + " (*G*) " + description
-        if "editorialSummary" in place:
-            description = place["editorialSummary"]["text"] + " (*E*) " + description
         photos = []
         for i in range(0, len(place["photos"])): 
             photos.append(_get_photo(place["photos"][i]["name"]))
