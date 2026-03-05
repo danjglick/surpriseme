@@ -18,6 +18,7 @@ const config = {
         { label: "a tourist attraction", endpoint: "attractions",  params: { zipcode } },
         { label: "an amusement park", endpoint: "amusement_parks",params: { zipcode } },
         { label: "a bowling alley", endpoint: "bowling_alleys", params: { zipcode } },
+        { label: "a walk" }
     ],
     watch_options: [
         { label: "a movie", endpoint: "movies", params: { movie_genre } },
