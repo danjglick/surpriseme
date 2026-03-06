@@ -1,9 +1,12 @@
 const zipcode = "02118"
 const album_genre = "rock"
 const movie_genre = "comedy"
+const lat = "42.364661"
+const lng = "-71.032229"
 
 const config = {
     go_options: [
+        { label: "a walk", endpoint: "walk", params: { lat, lng } },
         { label: "a bar", endpoint: "bars", params: { zipcode } },
         { label: "a restaurant", endpoint: "restaurants", params: { zipcode } },
         { label: "a park", endpoint: "parks", params: { zipcode } },
@@ -17,8 +20,7 @@ const config = {
         { label: "a cafe", endpoint: "cafes", params: { zipcode } },
         { label: "a tourist attraction", endpoint: "attractions",  params: { zipcode } },
         { label: "an amusement park", endpoint: "amusement_parks",params: { zipcode } },
-        { label: "a bowling alley", endpoint: "bowling_alleys", params: { zipcode } },
-        { label: "a walk" }
+        { label: "a bowling alley", endpoint: "bowling_alleys", params: { zipcode } }
     ],
     watch_options: [
         { label: "a movie", endpoint: "movies", params: { movie_genre } },
@@ -100,10 +102,12 @@ for (const [containerId, items] of Object.entries(config)) {
                     const icon = document.createElement("img")
                     icon.className = "result"
                     icon.src = result.links[i].src
+                    console.log(result.links[i].href)
                     link.appendChild(icon)
                     actionInfo.appendChild(link)
                 }
                 section.appendChild(actionInfo)
+
                 const description = document.createElement("div")
                 description.className = "result"
                 description.innerText = result.description
