@@ -35,6 +35,7 @@ def _get_nearby_places(type, zipcode):
         data = response.json()
         for place in data["places"]: 
             places.append(place)
+            print(place["displayName"]["text"])
     return places
 
 

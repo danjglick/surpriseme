@@ -1,10 +1,9 @@
-from dotenv import load_dotenv; load_dotenv()
 from flask import Flask, jsonify, request, send_from_directory
 
-from backend.get_albums import get_albums
-from backend.get_movies import get_movies
-from backend.get_places import get_places
 from backend.get_walk import get_walk
+from backend.get_places import get_places
+from backend.get_movies import get_movies
+from backend.get_albums import get_albums
 
 app = Flask(__name__, static_folder="../frontend", static_url_path="")
 
@@ -16,8 +15,7 @@ def index():
 
 @app.route("/api/walk", methods=["GET"])
 def fetch_walk():
-    lat = request.args.get("lat")
-    lng = request.args.get("lng")
+    lat, lng = request.args.get("lat"), request.args.get("lng")
     walk = get_walk(lat, lng)
     return jsonify({ "message": walk })
 
