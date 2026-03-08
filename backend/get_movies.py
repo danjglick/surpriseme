@@ -4,10 +4,10 @@ import random
 import requests
 
 from backend.surprise import Surprise
-
-TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
-TMDB_URL = "https://api.themoviedb.org/3/discover/movie"
-CONFIG_URL = "https://api.themoviedb.org/3/configuration"
+from backend.constants import (
+	TMDB_API_KEY,
+	TMDB_DISCOVER_URL
+)
 
 
 def _lookup_genre_id(movie_genre):
@@ -62,11 +62,11 @@ def get_movies(movie_genre):
 		"language": "en-US",
 		"page": 1
 	}
-	response = requests.get(TMDB_URL, params=params).json()
+	response = requests.get(TMDB_DISCOVER_URL, params=params).json()
 	total_pages = min(response["total_pages"], 450) # TMDB limits page queries to 500
 	random_page = random.randint(1, total_pages)
 	params["page"] = random_page
-	response = requests.get(TMDB_URL, params=params)
+	response = requests.get(TMDB_DISCOVER_URL, params=params)
 	movies_pool = response.json()["results"]
 	movies = []
 	for _ in range(0, 3):

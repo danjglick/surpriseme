@@ -4,16 +4,13 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 
-MUSICBRAINZ_URL = "https://musicbrainz.org/ws/2/release-group"
-MUSICBRAINZ_HEADERS = {
-    "User-Agent": "SurpriseMe/1.0.0 ( danjglick@gmail.com )",
-    "Accept": "application/json"
-}
-MUSICBRAINZ_REQUESTS_CAP = 10000
-WIKIPEDIA_URL = "https://en.wikipedia.org/w/api.php"
-WIKIPEDIA_HEADERS = {
-    "User-Agent": "AlbumReceptionFetcher/1.0 (danjglick@example.com)"
-}
+from backend.constants import (
+    MUSICBRAINZ_URL,
+    MUSICBRAINZ_HEADERS,
+    MUSICBRAINZ_REQUESTS_CAP,
+    WIKIPEDIA_URL,
+    WIKIPEDIA_HEADERS
+)
 
 
 def _remove_templates(text: str) -> str:

@@ -1,59 +1,60 @@
-import os
 import random
 
-from dotenv import load_dotenv; load_dotenv()
 import requests
 
 from backend.surprise import Surprise
+from backend.constants import( 
+    GOOGLE_API_KEY, 
+    GOOGLE_SEARCHTEXT_URL, 
+    GOOGLE_ICON,
+    WAZE_ICON
+)
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
-PLACES_URL = "https://places.googleapis.com/v1/places:searchText"
-FIELD_MASK = "places.displayName,places.currentOpeningHours,places.googleMapsLinks,places.addressComponents,places.editorialSummary,places.reviewSummary,places.photos,nextPageToken"
-PLACES_HEADERS = { 
+FIELD_MASK = "places.displayName,places.googleMapsLinks,places.addressComponents,places.editorialSummary,places.reviewSummary,places.photos,nextPageToken"
+HEADERS = { 
     "Content-Type": "application/json", 
     "X-Goog-Api-Key": GOOGLE_API_KEY, 
     "X-Goog-FieldMask": FIELD_MASK 
 }
-GOOGLE_ICON = "https://www.gstatic.com/marketing-cms/assets/images/0f/9a/58f1d92b46069b4a8bdc556b612c/google-maps.webp=s48-fcrop64=1,00000000ffffffff-rw"
-RADIUS_MILES = 30
-RADIUS_METERS = RADIUS_MILES * 1609.34
 
 
-def _get_nearby_places(type, zipcode):
+def _get_nearby_places(
+    type: str, 
+    zipcode: str
+) -> list[dict]:
     body = {
         "textQuery": f"{type} near {zipcode}",
-        "minRating": "4.0",
-        # "openNow": "true"
+        "minRating": "4.0", # "openNow": "true"
     }
-    response = requests.post(PLACES_URL, headers=PLACES_HEADERS, json=body)
+    response = requests.post(GOOGLE_SEARCHTEXT_URL, headers=HEADERS, json=body)
     data = response.json()
     places = data["places"]
     while "nextPageToken" in data:
         body["pageToken"] = data["nextPageToken"]
-        response = requests.post(PLACES_URL, headers=PLACES_HEADERS, json=body)
+        response = requests.post(GOOGLE_SEARCHTEXT_URL, headers=HEADERS, json=body)
         data = response.json()
         for place in data["places"]: 
             places.append(place)
-            print(place["displayName"]["text"])
     return places
 
 
-def _get_name(place):
+def _get_name(
+    place: dict
+) -> str:
     name = place["displayName"]["text"]
-    city = None
-    hood = None
-    for component in place["addressComponents"]:
+    locale = None
+    for component in place["addressComponents"]: # this if/elif logic seems wrong
         if "neighborhood" in component["types"]: 
-            hood = component["longText"]
+            locale = component["longText"]
         elif "locality" in component["types"]: 
-            city = component["longText"]
-    locale = city if hood is None else hood
+            locale = component["longText"]
     name += f" - {locale}"
     return name
 
 
-def _get_description(place):
+def _get_description(
+    place: dict
+) -> str:
     description = None
     if "reviewSummary" in place:
         description = place["reviewSummary"]["text"]["text"]
@@ -63,7 +64,9 @@ def _get_description(place):
     return description
 
 
-def _get_photos(place):
+def _get_photos(
+    place: dict
+) -> list[str]:
     photos = []
     for i in range(0, len(place["photos"])):
         photo_name = place["photos"][i]["name"]
@@ -75,7 +78,9 @@ def _get_photos(place):
     return photos
 
 
-def _get_links(place):
+def _get_links(
+    place: dict
+) -> list[dict]:
     return [
         { 
             "href": place["googleMapsLinks"]["placeUri"],
@@ -83,19 +88,22 @@ def _get_links(place):
         },
         {
             "href": "",
-            "src": "https://www.gstatic.com/marketing-cms/assets/images/ec/00/5d847c1e4109ab4d2d82aec7726f/waze-logo.webp=s48-fcrop64=1,00000000ffffffff-rw"
+            "src": WAZE_ICON
         }
     ]
 
 
-def get_places(type, zipcode):
-    places_pool = _get_nearby_places(type, zipcode)
+def get_places(
+    type: str, 
+    zipcode: str
+) -> list[Surprise]:
+    nearby_places = _get_nearby_places(type, zipcode)
     places = []
     for _ in range(0, 3):
         description = None
         while description is None:
-            place = random.choice(places_pool)
-            places_pool.remove(place)
+            place = random.choice(nearby_places)
+            nearby_places.remove(place)
             description = _get_description(place)
         name = _get_name(place)
         photos = _get_photos(place)
