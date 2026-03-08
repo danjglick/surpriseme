@@ -18,13 +18,10 @@ HEADERS = {
 }
 
 
-def _get_nearby_places(
-    type: str, 
-    zipcode: str
-) -> list[dict]:
+def _get_nearby_places(type: str, zipcode: str) -> list[dict]:
     body = {
         "textQuery": f"{type} near {zipcode}",
-        "minRating": "4.0", # "openNow": "true"
+        "minRating": "4.0"
     }
     response = requests.post(GOOGLE_SEARCHTEXT_URL, headers=HEADERS, json=body)
     data = response.json()
@@ -38,12 +35,10 @@ def _get_nearby_places(
     return places
 
 
-def _get_name(
-    place: dict
-) -> str:
+def _get_name(place: dict) -> str:
     name = place["displayName"]["text"]
     locale = None
-    for component in place["addressComponents"]: # this if/elif logic seems wrong
+    for component in place["addressComponents"]:
         if "neighborhood" in component["types"]: 
             locale = component["longText"]
         elif "locality" in component["types"]: 
@@ -52,9 +47,7 @@ def _get_name(
     return name
 
 
-def _get_description(
-    place: dict
-) -> str:
+def _get_description(place: dict) -> str:
     description = None
     if "reviewSummary" in place:
         description = place["reviewSummary"]["text"]["text"]
@@ -64,9 +57,7 @@ def _get_description(
     return description
 
 
-def _get_photos(
-    place: dict
-) -> list[str]:
+def _get_photos(place: dict) -> list[str]:
     photos = []
     for i in range(0, len(place["photos"])):
         photo_name = place["photos"][i]["name"]
@@ -78,9 +69,7 @@ def _get_photos(
     return photos
 
 
-def _get_links(
-    place: dict
-) -> list[dict]:
+def _get_links(place: dict) -> list[dict]:
     return [
         { 
             "href": place["googleMapsLinks"]["placeUri"],
@@ -93,10 +82,7 @@ def _get_links(
     ]
 
 
-def get_places(
-    type: str, 
-    zipcode: str
-) -> list[Surprise]:
+def get_places(type: str, zipcode: str) -> list[Surprise]:
     nearby_places = _get_nearby_places(type, zipcode)
     places = []
     for _ in range(0, 3):

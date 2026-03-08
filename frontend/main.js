@@ -24,14 +24,14 @@ const config = {
     ],
     watch_options: [
         { label: "a movie", endpoint: "movies", params: { movie_genre } },
-        { label: "a tv show" },
-        { label: "live sports" },
-        { label: "a youtube channel" },
+        { label: "a tv show*" },
+        { label: "live sport*" },
+        { label: "a youtube channel*" },
     ],
     listen_options: [
         { label: "an album", endpoint: "albums", params: { album_genre } },
-        { label: "a podcast" },
-        { label: "an audiobook" }
+        { label: "a podcast*" },
+        { label: "an audiobook*" }
     ], 
     read_options: [
         { label: "a book" },

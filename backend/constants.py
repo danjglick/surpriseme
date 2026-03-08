@@ -16,6 +16,7 @@ MUSICBRAINZ_REQUESTS_CAP = 10000
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 TMDB_DISCOVER_URL = "https://api.themoviedb.org/3/discover/movie"
+TMDB_PAGES_CAP = 500
 
 WAZE_ICON = "https://www.gstatic.com/marketing-cms/assets/images/ec/00/5d847c1e4109ab4d2d82aec7726f/waze-logo.webp=s48-fcrop64=1,00000000ffffffff-rw"
 

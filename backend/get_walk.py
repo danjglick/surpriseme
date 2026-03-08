@@ -16,7 +16,7 @@ HEADERS = {
     "X-Goog-Api-Key": GOOGLE_API_KEY, 
     "X-Goog-FieldMask": FIELD_MASK 
 }
-RADIUS_METERS = 400
+RADIUS_METERS = 350
 LNG = -71.032229
 LAT = 42.364661
 
