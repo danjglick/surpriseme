@@ -13,14 +13,6 @@ from backend.constants import (
 COMEDY_GENRE_ID = 35
 
 
-def _get_photo():
-	return
-
-
-def _get_links():
-	return
-
-
 def get_movies() -> list[Surprise]:
 	params = {
 		"api_key": TMDB_API_KEY,

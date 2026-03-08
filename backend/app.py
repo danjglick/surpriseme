@@ -121,8 +121,7 @@ def fetch_bowling_alleys():
 
 @app.route("/api/movies", methods=["GET"])
 def fetch_movies():
-    movie_genre = request.args.get("movie_genre")
-    movies: list[Surprise] = get_movies(movie_genre)
+    movies: list[Surprise] = get_movies()
     return jsonify({ "message": movies })
     
 
